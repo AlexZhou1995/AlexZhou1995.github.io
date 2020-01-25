@@ -5597,7 +5597,7 @@ button {
 .article-entry h4,
 .article-entry h5,
 .article-entry h6 {
-  margin: 1.5rem 0;
+  margin: 2.5rem 0 1.5rem;
 }
 .article-entry hr {
   height: 0.1rem;
@@ -5723,15 +5723,15 @@ button {
   -webkit-overflow-scrolling: touch;
 }
 .content.on {
-  transform: translateX(7rem);
+  transform: translateX(8rem);
   margin-left: 0 !important;
 }
 .sidebar {
   position: fixed;
   z-index: 9;
-  left: -7rem;
+  left: -8rem;
   bottom: 0;
-  width: 7rem;
+  width: 8rem;
   height: 100%;
   background-color: rgba(0,0,0,0.8);
 }
@@ -5741,7 +5741,7 @@ button {
 .navbar-toggle {
   position: absolute;
   top: 1.5rem;
-  left: 8.5rem;
+  left: 9.5rem;
   border: none;
   height: 4rem;
   width: 4rem;
@@ -6049,7 +6049,7 @@ button {
   width: 100%;
   position: fixed;
   top: -100%;
-  right: 7rem;
+  right: 8rem;
   left: 0;
   opacity: 0;
   transition: 0.3s;
@@ -6464,7 +6464,7 @@ a.toc-link {
 .is-position-fixed {
   position: fixed !important;
   top: 0;
-  right: 7rem;
+  right: 8rem;
 }
 .toc-link::before {
   background-color: #cce5ff;
