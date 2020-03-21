@@ -4,11 +4,38 @@
   
     
     <entry>
+      <title>Pandas处理MovieLen25M数据集</title>
+      <link href="/2020/03/21/Pandas%E5%A4%84%E7%90%86MovieLen25M%E6%95%B0%E6%8D%AE%E9%9B%86/"/>
+      <url>/2020/03/21/Pandas%E5%A4%84%E7%90%86MovieLen25M%E6%95%B0%E6%8D%AE%E9%9B%86/</url>
+      
+        <content type="html"><![CDATA[<p>最近做了一些推荐侧召回的实验尝试，除了在业务的数据上进行测试，我还想在公开数据集上进行验证。参考Related works，最终选择使用MovieLen和Amazon的数据集。由于这两个数据集给的是裸的数据，因此需要我们根据自己的需要做一些处理。这里我用pandas来做数据的分析和处理。<br>Pandas是数据科学常用的工具，但是说来惭愧，我之前倒是很少用Pandas。因为之前做强化学习较多，不太需要大量的这种数据分析。因此这次也就趁机在熟悉一下。我个人觉得相比于算法原理，工具类的东西大致记录一下就好。工作中用到多了自然就记住了，记不住的说明平时也不怎么用，到时候再查就好，相关的文档网上有很多很多，倒是不必死记。</p><p>废话不多说，直接上Notebook吧，该说的都在注释里。（下面的链接是个html，但是如果我以HTML的格式放到资源文件夹里，编译后blog首页排版会有错）</p><a href="/2020/03/21/Pandas%E5%A4%84%E7%90%86MovieLen25M%E6%95%B0%E6%8D%AE%E9%9B%86/ml_data_process" title="[pandas数据处理notebook]">[pandas数据处理notebook]</a><p>经过这样处理，我得到了几个处理后的表，表的含义见notebook</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">viewed_sequence</span><br><span class="line">genome_feature</span><br><span class="line">genres_tag_one_hot_feature</span><br><span class="line">movie_rating_feature</span><br><span class="line">tag_feature_movie</span><br><span class="line">tag_feature_user</span><br><span class="line">user_rating_feature</span><br></pre></td></tr></table></figure><p>最后通过python+MPI并行的聚合生成最后的数据，写入到本地文件</p><a href="/2020/03/21/Pandas%E5%A4%84%E7%90%86MovieLen25M%E6%95%B0%E6%8D%AE%E9%9B%86/run.py" title="[python+MPI产出聚合数据集]">[python+MPI产出聚合数据集]</a><p>不过最终处理出来的数据集有十几个G，受限于线上docker容器的内存限制，无法放到一个文件里序列化存储和恢复，还是得通过file的方式来读，算是没有完美的达到预期，但是问题不大。</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> ML </category>
+          
+          <category> python </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> ML </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>2020年03月15日</title>
       <link href="/2020/03/16/2020-03-15/"/>
       <url>/2020/03/16/2020-03-15/</url>
       
-        <content type="html"><![CDATA[<p>今天感觉最近的生活状态不是很对，花了很多时间在没有特别多意义的事情上。如何能够专注在一个事情上，做更深入的思考，这时一个值得探索的课题。不仅是做完，更是打磨完善，直到超出某个阈值，这样才能把事情做到让旁人觉得值得点赞的程度。</p><p>此外，“以为自己想明白了”和“自己确实想明白了”之前是有个gap的。能把自己想明白的东西整理输出出来，这才是真正的想明白了。很多时候以为自己想明白了，但是一跟别人说，或者一做ppt就讲不明白，说明理解的还不够通透。因此，多思考，并且把自己的思考输出、记录下来，这应该是有利于理解和积累的。这也是我为什么又重新开始写自己的blog。</p><p>最后，做什么事情都需要坚持，希望写blog这个事情我也能坚持下来，深入思考，不断打磨，不断积累。相信长期下来应该有不错的收货。</p>]]></content>
+        <content type="html"><![CDATA[<p>今天感觉最近的生活状态不是很对，花了很多时间在没有特别多意义的事情上。如何能够专注在一个事情上，做更深入的思考，这时一个值得探索的课题。不仅是做完，更是打磨完善，直到超出某个阈值，这样才能把事情做到让旁人觉得值得点赞的程度。</p><p>此外，“以为自己想明白了”和“自己确实想明白了”之前是有个gap的。能把自己想明白的东西整理输出出来，这才是真正的想明白了。很多时候以为自己想明白了，但是一跟别人说，或者一做ppt就讲不明白，说明理解的还不够通透。因此，多思考，并且把自己的思考输出、记录下来，这应该是有利于理解和积累的。这也是我为什么又重新开始写自己的blog。<br>看着师弟，同级还有师兄中，都有人在知乎上撰写技术文章，我现在也感觉到这里面确实是有必要的，不管是对内的自我沉淀，和对外的自我宣传。</p><p>此外，还有很多事情，也是工作之后看到身边优秀的人们才渐渐想明白。包括对自我行为的认知，包括怎么做事情会高效，怎么样才能快速拿结果避免无用功。这些事情现在已经渐渐有了一些自己的理解，以后有机会在慢慢详述。当然还有一些事情我隐约觉得很重要，但是目前还没有一个清晰的认知和思考，在之后的生活中应该会渐渐参悟吧。</p><p>最后，做什么事情都需要坚持，希望写blog这个事情我也能坚持下来，深入思考，不断打磨，不断积累。相信长期下来应该有不错的收货。</p>]]></content>
       
       
       <categories>
