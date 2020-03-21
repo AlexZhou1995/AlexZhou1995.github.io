@@ -1,0 +1,10 @@
+.DS_Store
+.deploy_git
+.idea/
+*.log
+*.iml
+yarn.lock
+package-lock.json
+node_modules/
+.cache
+themes/ayer
