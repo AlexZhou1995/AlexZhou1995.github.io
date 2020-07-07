@@ -62,6 +62,163 @@
     
     
     
+    <article id="post-FiBiNet" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/07/07/FiBiNet/"
+    >FiBiNet：特征重要性+Bilinear交叉</a> 
+</h2>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/07/FiBiNet/" class="article-date">
+  <time datetime="2020-07-07T15:40:01.000Z" itemprop="datePublished">2020-07-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ML/">ML</a> / <a class="article-category-link" href="/categories/ML/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a> / <a class="article-category-link" href="/categories/ML/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>FiBiNET: Combining Feature Importance and Bilinear feature Interaction for Click-Through Rate Prediction</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>文章指出当前的许多通过特征组合进行CTR预估的工作主要使用特征向量的内积或哈达玛积来计算交叉特征，这种方法忽略了特征本身的重要程度。提出通过使用Squeeze-Excitation network (SENET) 结构动态学习特征的重要性以及使用一个双线性函数(Bilinear function)来更好的建模交叉特征。</p>
+<h2 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h2><p>本文的网络结构图如下：<br><img src="15941047971358.jpg" alt=""></p>
+<p>可以看到有2处与普通的CTR模型不同：1.SENET Layer 2.Bilinear-Interaction Layer。我们着重看这两部分。假设ID特征有$f$个，第$i$个特征的embedding为$e_i \in R^k$，$k$为embed_size，下面先看一次前向的数据流：<br>1.$E=[e_1,e_2,…,e_f]$，$A$=SENET($E$)，A为每个ID特征的权重，$A\in R^f$<br>2.用权重$A$给$E$的对应特征加权，得到了加权后的Embedding $V=[v_1,…,v_f],v_i\in R^k$<br>3.$p$=Bilinear-Interaction($E$)，$p=[p_1,…,p_n]$，其中$n=\frac{f(f-2)}{2}$，即交叉组合数。同理$q$=Bilinear-Interaction($V$)<br>4.将$p$和$q$concat起来之后过DNN输出结果。</p>
+<h3 id="SENET"><a href="#SENET" class="headerlink" title="SENET"></a>SENET</h3><h4 id="1-Squeeze"><a href="#1-Squeeze" class="headerlink" title="1.Squeeze"></a>1.Squeeze</h4><p>将每一个ID特征压缩到一个标量，压缩可以是mean-pooling或者max-pooling，下面是mean-pooling的数学表示<br>$$<br>z_i = F_{sq}(e_i) = \frac{1}{k}\sum_{t=1}^ke_i^{(t)}<br>$$</p>
+<h4 id="2-Excitation"><a href="#2-Excitation" class="headerlink" title="2.Excitation"></a>2.Excitation</h4><p>得到$z\in R^{f\times 1}$后，类似AutoEncoder，过两层全连接得到每个特征的权重$A=[a_1,…,a_f]$<br>$$<br>A=F_{e x}(Z)=\sigma_{2}\left(W_{2} \sigma_{1}\left(W_{1} Z\right)\right)<br>$$<br>其中$\sigma$为激活函数，$W_1\in R^{f\times f/r}$，$W_2\in R^{f/r \times f}$，$r$为缩减比例，据说设置为8比较好。<br>这一步我理解是把不重要的特征的weight进一步压低。</p>
+<h4 id="3-Re-weight"><a href="#3-Re-weight" class="headerlink" title="3.Re-weight"></a>3.Re-weight</h4><p>最后一步即是用$A$缩放$E$得到$V$<br>$$<br>V=F_{R e W e i g h t}(A, E)=\left[a_{1} \cdot e_{1}, \cdots, a_{f} \cdot e_{f}\right]=\left[v_{1}, \cdots, v_{f}\right]<br>$$</p>
+<h3 id="Bilinear-Interaction"><a href="#Bilinear-Interaction" class="headerlink" title="Bilinear-Interaction"></a>Bilinear-Interaction</h3><p>一般的交叉方法用内积（$\cdot$）或者哈达玛积（$\odot$）<br>$$<br>\begin{aligned}<br>\left[a_{1}, a_{2}, \ldots, a_{n}\right] \cdot\left[b_{1}, b_{2}, \ldots, b_{n}\right] &amp;=\sum_{i=1}^{n} a_{i} b_{i} \<br>\left[a_{1}, a_{2}, \ldots, a_{n}\right] \odot\left[b_{1}, b_{2}, \ldots, b_{n}\right] &amp;=\left[a_{1} b_{1}, a_{2} b_{2}, \ldots, a_{n} b_{n}\right]<br>\end{aligned}<br>$$<br>作者认为这些方法没有办法很好表示稀疏特征之间的组合，他选择在特征交叉时加入一个($k\times k$)的参数$W$<br>$$<br>p_{i,j} = v_i \cdot W \odot v_j<br>$$<br>这样要学习的$W$会暴增，作者提出了三种方案：</p>
+<ol>
+<li>Field-ALL：所有的交叉公用一个$W$</li>
+<li>Field-Each：每个在左边的$v_i$都有一个$W_i$，则一共需要$f$个$W$</li>
+<li>Field-Interaction：每一对$(v_i,v_j)$单独一个$W$，一共需要$\frac{f(f-1)}{2}$个$W$</li>
+</ol>
+<p>通过Bilinear-Interaction Layer，$E \to p, V \to q$，最终$[p,q]$进DNN输出最后的logits。</p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ML/" rel="tag">ML</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
+    <article id="post-AutoInt" class="article article-type-post" itemscope
+  itemprop="blogPost" data-scroll-reveal>
+
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h2 itemprop="name">
+  <a class="article-title" href="/2020/07/07/AutoInt/"
+    >AutoInt：构造高阶特征交叉</a> 
+</h2>
+ 
+
+    </header>
+    
+
+    
+    <div class="article-meta">
+      <a href="/2020/07/07/AutoInt/" class="article-date">
+  <time datetime="2020-07-07T15:34:56.000Z" itemprop="datePublished">2020-07-07</time>
+</a>
+      
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/ML/">ML</a> / <a class="article-category-link" href="/categories/ML/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a> / <a class="article-category-link" href="/categories/ML/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F/">推荐系统</a>
+  </div>
+
+      
+      
+      
+    </div>
+    
+
+    
+
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+      
+
+      
+      <p>AutoInt: Automatic Feature Interaction Learning via Self-Attentive Neural Networks (CIKM 2019)</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文通过另外的角度来做特征交叉和构造高阶特征，结构如下图<br><img src="15941030467753.jpg" alt=""></p>
+<p>一句话总结：<strong>把Dense特征也转化为embedding，然后所有特征一起过Multi-Head Attention。</strong></p>
+<p>对dense特征做embedding：每个dense特征对应一个嵌入向量，乘以具体的dense特征值 作为其最终的emeddding。</p>
+<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点：简单易实现；可以让Dense和ID特征交叉。<br>缺点：提升似乎不是特别显著，如果模型里有了PNN，看起来再加AutoInt提升不大。</p>
+
+      
+      <!-- reward -->
+      
+    </div>
+    
+    
+      <!-- copyright -->
+      
+    <footer class="article-footer">
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ML/" rel="tag">ML</a></li></ul>
+
+
+    </footer>
+
+  </div>
+
+  
+
+  
+  
+  
+
+  
+
+</article>
+    
     <article id="post-深度召回算法" class="article article-type-post" itemscope
   itemprop="blogPost" data-scroll-reveal>
 
