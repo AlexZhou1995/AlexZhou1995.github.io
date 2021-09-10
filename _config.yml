@@ -99,7 +99,7 @@ theme: ayer
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
-  repo: https://github.com/AlexZhou1995/AlexZhou1995.github.io
+  repo: git@github.com:AlexZhou1995/AlexZhou1995.github.io
   # example, https://github.com/hexojs/hexojs.github.io
   branch: master
 
