@@ -4,6 +4,33 @@
   
     
     <entry>
+      <title>渲染 Hexo 博客里的 latex 公式</title>
+      <link href="/2021/09/13/LATEX-IN-HEXO/"/>
+      <url>/2021/09/13/LATEX-IN-HEXO/</url>
+      
+        <content type="html"><![CDATA[<h2 id="markdown渲染器的不足">markdown渲染器的不足</h2><p>hexo的默认渲染器hexo-renderer-marked不支持latex语法，一些latex中的符号会被误认为是markdown语法，比如<code>\</code>、<code>_</code>和<code>*</code>，这让mathjax不能正确地渲染（katex需要渲染器支持，根本不能工作）。</p><h2 id="替换pandoc">替换pandoc</h2><p>办法就是替换Hexo的渲染器，比如在博客目录下执行：</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">brew install pandoc</span><br><span class="line">npm uninstall hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-pandoc --save</span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> Blog </category>
+          
+          <category> Hexo </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Others </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>CapsuleNetwork调研</title>
       <link href="/2021/09/10/CapsuleNetwork/"/>
       <url>/2021/09/10/CapsuleNetwork/</url>
