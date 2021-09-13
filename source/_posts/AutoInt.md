@@ -7,6 +7,8 @@ categories: ['ML','论文阅读','推荐系统']
 
 AutoInt: Automatic Feature Interaction Learning via Self-Attentive Neural Networks (CIKM 2019)
 
+<!--more-->
+
 ## 简介
 
 本文通过另外的角度来做特征交叉和构造高阶特征，结构如下图

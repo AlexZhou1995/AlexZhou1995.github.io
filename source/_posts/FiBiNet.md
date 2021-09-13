@@ -10,6 +10,7 @@ FiBiNET: Combining Feature Importance and Bilinear feature Interaction for Click
 ## 简介
 文章指出当前的许多通过特征组合进行CTR预估的工作主要使用特征向量的内积或哈达玛积来计算交叉特征，这种方法忽略了特征本身的重要程度。提出通过使用Squeeze-Excitation network (SENET) 结构动态学习特征的重要性以及使用一个双线性函数(Bilinear function)来更好的建模交叉特征。
 
+<!--more-->
 
 
 ## 方法
