@@ -1,7 +1,7 @@
 ---
 title: 渲染 Hexo 博客里的 latex 公式
 date: 2021-09-13 10:35:58
-tags: ['Others']
+tags: ['其他']
 categories: ['Blog','Hexo']
 ---
 
