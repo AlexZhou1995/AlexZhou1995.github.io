@@ -97,10 +97,12 @@
 
       
       <p>AutoInt: Automatic Feature Interaction Learning via Self-Attentive Neural Networks (CIKM 2019)</p>
-<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本文通过另外的角度来做特征交叉和构造高阶特征，结构如下图<br><img src="15941030467753.jpg" alt=""></p>
+<h2 id="简介">简介</h2>
+<p>本文通过另外的角度来做特征交叉和构造高阶特征，结构如下图 <img src="15941030467753.jpg" /></p>
 <p>一句话总结：<strong>把Dense特征也转化为embedding，然后所有特征一起过Multi-Head Attention。</strong></p>
 <p>对dense特征做embedding：每个dense特征对应一个嵌入向量，乘以具体的dense特征值 作为其最终的emeddding。</p>
-<h2 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h2><p>优点：简单易实现；可以让Dense和ID特征交叉。<br>缺点：提升似乎不是特别显著，如果模型里有了PNN，看起来再加AutoInt提升不大。</p>
+<h2 id="优缺点">优缺点</h2>
+<p>优点：简单易实现；可以让Dense和ID特征交叉。 缺点：提升似乎不是特别显著，如果模型里有了PNN，看起来再加AutoInt提升不大。</p>
 
       
       <!-- reward -->
