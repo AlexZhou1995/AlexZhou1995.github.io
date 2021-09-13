@@ -1,38 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="utf-8" />
-    
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <title>
-    深度召回算法 |  HomePage
-  </title>
-  <meta name="generator" content="hexo-theme-yilia-plus">
-  
-  <link rel="shortcut icon" href="/favicon.ico" />
-  
-  
-<link rel="stylesheet" href="/css/main.css">
 
-  
-  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-  
+<html lang="cn">
   
 
-  
+    <head>
+      <meta charset="utf-8" />
+        
+      <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1"
+      />
+      <title>深度召回算法 |  HomePage</title>
+  <meta name="generator" content="hexo-theme-ayer">
+      
+      <link rel="shortcut icon" href="/favicon.ico" />
+       
+<link rel="stylesheet" href="/dist/main.css">
 
-</head>
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/Shen-Yu/cdn/css/remixicon.min.css"
+      />
+      
+<link rel="stylesheet" href="/css/custom.css">
+ 
+      <script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
+       
+ 
 
+      <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma@5.0.1/bulma.min.css"
+      />
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
+      <!-- mermaid -->
+      
+      <style>
+        .swal2-styled.swal2-confirm {
+          font-size: 1.6rem;
+        }
+      </style>
+    </head>
+  </html>
 </html>
+
 
 <body>
   <div id="app">
-    <main class="content">
+    
+      
+      <canvas width="1777" height="841"
+        style="position: fixed; left: 0px; top: 0px; z-index: 99999; pointer-events: none;"></canvas>
+      
+    <main class="content on">
       <section class="outer">
-  <article id="post-深度召回算法" class="article article-type-post" itemscope
-  itemprop="blogPost" data-scroll-reveal>
-
+  <article
+  id="post-深度召回算法"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
   <div class="article-inner">
     
     <header class="article-header">
@@ -42,27 +72,23 @@
 </h1>
  
 
+      
     </header>
-    
-
-    
+     
     <div class="article-meta">
       <a href="/2020/04/04/%E6%B7%B1%E5%BA%A6%E5%8F%AC%E5%9B%9E%E7%AE%97%E6%B3%95/" class="article-date">
   <time datetime="2020-04-04T13:32:12.000Z" itemprop="datePublished">2020-04-04</time>
-</a>
-      
+</a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/ML/">ML</a> / <a class="article-category-link" href="/categories/ML/%E8%AE%BA%E6%96%87%E9%98%85%E8%AF%BB/">论文阅读</a>
   </div>
-
-      
-      
+  
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
-            <span class="post-meta-item-text"> 字数统计:</span>
-            <span class="post-count">3.4k字</span>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">3.4k</span>
         </span>
     </span>
 
@@ -70,34 +96,25 @@
         &nbsp; | &nbsp;
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
-            <span class="post-meta-item-text"> 阅读时长≈</span>
-            <span class="post-count">12分钟</span>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">12 min</span>
         </span>
     </span>
 </div>
-
-      
+ 
     </div>
-    
-
-    
-    
+      
     <div class="tocbot"></div>
 
 
 
 
-
-    
-
-    
+  
     <div class="article-entry" itemprop="articleBody">
-      
-      
-
-      
-      <h2 id="一简介">一、简介</h2>
+       
+  <h2 id="一简介">一、简介</h2>
 <p>推荐系统的基本架构一般由索引、召回、粗排、精排、重排等几个部分构成，而其中的召回阶段（或者称之为Matching阶段）则主要负责根据用户和内容特征，从众多的内容库中找到用户可能感兴趣的内容。传统的召回算法，如ItemCF等，大多基于统计的方法来计算item之间的相似度，根据用户近期买过的商品进行召回。传统召回算法实现成本低，模型简单响应速度快，但是基于数据统计得到的相似关系缺乏个性化能力，召回商品的发现性，多样性较低。 近年来，随着深度学习的兴起，一些深度召回算法被提出。它们利用深度模型表达能力高，特征提取能力强的特点，提高了个性化召回算法的效果。最初的深度召回算法主要通过深度神经网络挖掘用户和商品在低维表示空间上的相似性，为用户召回低维表示相似的商品，这类方法我们往往称之为向量化召回算法。相比于基于数据统计的相似性计算，向量化召回的个性化程度更高，召回商品的发现性和多样性也较高。还有一些深度召回算法尝试建立商品之间的关系图，通过基于图的深度网络学习，从拓扑关系的角度捕捉商品之间的相关性，这类方法我们称之为基于图的深度召回算法。最后，还有一些方法致力于攻克深度模型带来的性能开销，使得深度模型能够在大规模的召回场景中可用，比如通过树结构和哈希的方法对召回的过程进行提速等等，这类方法我们称之为大规模深度召回算法。本文就从这三类方法展开，介绍一些现有的深度召回算法。</p>
+<a id="more"></a>
 <h2 id="二分类">二、分类</h2>
 <ul>
 <li><p>DeepMatch youtube在2016年提出了用深度模型进行多分类的监督训练，得到item和user的embedding最后在线上通过内积进行召回检索，算是深度模型时代向量化召回的开端。本文中将通过分类任务监督训练得到embedding最后通过内积进行检索的方法都归到这一类</p></li>
@@ -148,33 +165,34 @@
 <p>方法名：JTM 动机：TDM中深度模型和树结构训练是完全分隔开的，目标不同可能导致相互牵制无法训练到最优。 方法：构建统一loss function，深度模型和树结构联合优化。树结构的优化是个较难的组合优化问题，转化为带权二部图匹配问题后用贪心算法求解。</p>
 <h2 id="七结语">七、结语</h2>
 <p>本文介绍了近几年内的一些深度召回算法，主要把它们划分成“Deep Matching类算法”、“基于图的算法”、“面向大规模场景算法”3类算法，并对这3类算法进行归纳和总结，分析他们的动机、做法和优缺点。深度学习在推荐系统中的应用是近年来持续的热门研究课题，每年都会有大量新技术和新模型出现。我们希望这篇文章能帮助读者对这个领域有一个大致的了解，并为未来的研究提供一些思路和参考。</p>
-
-      
+ 
       <!-- reward -->
       
-      <div id="reward-btn">
-        打赏
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
       </div>
       
     </div>
     
+
+    <!-- copyright -->
     
-      <!-- copyright -->
-      
-        <div class="declare">
-          <ul class="post-copyright">
-            <li>
-              <i class="ri-copyright-line"></i>
-              <strong>版权声明： </strong s>
-              本博客所有文章除特别声明外，均采用 <a href="https://www.apache.org/licenses/LICENSE-2.0.html" rel="external nofollow"
-                target="_blank">Apache License 2.0</a> 许可协议。转载请注明出处！
-            </li>
-          </ul>
-        </div>
-        
-    <footer class="article-footer">
-      
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
           
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
 <div class="share-btn">
       <span class="share-sns share-outer">
         <i class="ri-share-forward-line"></i>
@@ -221,18 +239,13 @@
     </div>
 </div>
 
-<div id="share-mask"></div>
-      
-      
+<div id="share-mask"></div>  
   <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ML/" rel="tag">ML</a></li></ul>
 
-
     </footer>
-
   </div>
 
-  
-  
+   
   <nav class="article-nav">
     
       <a href="/2020/07/07/AutoInt/" class="article-nav-link">
@@ -252,97 +265,93 @@
     
   </nav>
 
-
-  
-
-  
-  
+   
 <!-- valine评论 -->
 <div id="vcomments-box">
-    <div id="vcomments">
-    </div>
+  <div id="vcomments"></div>
 </div>
 <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-<script src='https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
 <script>
-    new Valine({
-        el: '#vcomments',
-        app_id: 'i0uKYOaVBylrIaKuIP6VoUug-gzGzoHsz',
-        app_key: 'OSxgPizi7Bk0QMgdHblOg1qF',
-        path: window.location.pathname,
-        notify: 'false',
-        verify: 'false',
-        avatar: 'mp',
-        placeholder: '给我的文章加点评论吧~',
-        recordIP: true
+  new Valine({
+    el: "#vcomments",
+    app_id: "i0uKYOaVBylrIaKuIP6VoUug-gzGzoHsz",
+    app_key: "OSxgPizi7Bk0QMgdHblOg1qF",
+    path: window.location.pathname,
+    avatar: "mp",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
     });
-    const infoEle = document.querySelector('#vcomments .info');
-    if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
-        infoEle.childNodes.forEach(function (item) {
-            item.parentNode.removeChild(item);
-        });
-    }
+  }
 </script>
 <style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
     #vcomments-box {
-        padding: 5px 30px;
+      padding: 5px 0px;
     }
+  }
 
-    @media screen and (max-width: 800px) {
-        #vcomments-box {
-            padding: 5px 0px;
-        }
-    }
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
 
-    #vcomments-box #vcomments {
-        background-color: #fff;
-    }
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
 
-    .v .vlist .vcard .vh {
-        padding-right: 20px;
-    }
-
-    .v .vlist .vcard {
-        padding-left: 10px;
-    }
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
 </style>
 
-  
-
-  
-  
-  
-
+ 
+   
+     
 </article>
+
 </section>
       <footer class="footer">
   <div class="outer">
-    <ul class="list-inline">
+    <ul>
       <li>
-        &copy;
+        Copyrights &copy;
         2020-2021
-        AlexZhou
+        <i class="ri-heart-fill heart_icon"></i> AlexZhou
       </li>
+    </ul>
+    <ul>
       <li>
-        
-        Powered by
-        
-        
-        <a href="https://hexo.io" target="_blank">Hexo</a> Theme <a href="https://github.com/Shen-Yu/hexo-theme-ayer" target="_blank">Ayer</a>
         
       </li>
     </ul>
-    <ul class="list-inline">
+    <ul>
       <li>
         
         
         <span>
-  <i>PV:<span id="busuanzi_value_page_pv"></span></i>
-  <i>UV:<span id="busuanzi_value_site_uv"></span></i>
+  <span><i class="ri-user-3-fill"></i>Visitors:<span id="busuanzi_value_site_uv"></span></span>
+  <span class="division">|</span>
+  <span><i class="ri-eye-fill"></i>Views:<span id="busuanzi_value_page_pv"></span></span>
 </span>
         
       </li>
+    </ul>
+    <ul>
       
+    </ul>
+    <ul>
+      
+    </ul>
+    <ul>
       <li>
         <!-- cnzz统计 -->
         
@@ -351,14 +360,19 @@
       </li>
     </ul>
   </div>
-</footer>
-      <div class="to_top">
-        <div class="totop" id="totop">
+</footer>    
+    </main>
+    <div class="float_btns">
+      <div class="totop" id="totop">
   <i class="ri-arrow-up-line"></i>
 </div>
-      </div>
-    </main>
-    <aside class="sidebar">
+
+<div class="todark" id="todark">
+  <i class="ri-moon-line"></i>
+</div>
+
+    </div>
+    <aside class="sidebar on">
       <button class="navbar-toggle"></button>
 <nav class="navbar">
   
@@ -394,6 +408,14 @@
     
     <li class="nav-item">
       <a class="nav-item-link" href="/tags/%E5%85%B6%E4%BB%96/">其他</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/photos">相册</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-item-link" href="/friends">友链</a>
     </li>
     
     <li class="nav-item">
@@ -447,52 +469,39 @@
   </div>
 </div>
     
-<script src="/js/jquery-2.0.3.min.js"></script>
-
-
-<script src="/js/share.js"></script>
-
-
+<script src="/js/jquery-3.6.0.min.js"></script>
+ 
 <script src="/js/lazyload.min.js"></script>
 
-
-
-
-
+<!-- Tocbot -->
+ 
 <script src="/js/tocbot.min.js"></script>
 
 <script>
-  // Tocbot_v4.7.0  http://tscanlin.github.io/tocbot/
   tocbot.init({
-    tocSelector: '.tocbot',
-    contentSelector: '.article-entry',
-    headingSelector: 'h1, h2, h3, h4, h5, h6',
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
     hasInnerContainers: true,
     scrollSmooth: true,
-    scrollContainer: 'main',
-    positionFixedSelector: '.tocbot',
-    positionFixedClass: 'is-position-fixed',
-    fixedSidebarOffset: 'auto',
-    onClick: (e) => {
-      $('.toc-link').removeClass('is-active-link');
-      $(`a[href=${e.target.hash}]`).addClass('is-active-link');
-      $(e.target.hash).scrollIntoView();
-      return false;
-    }
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
   });
 </script>
 
-
-
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css">
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.css"
+/>
 <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js"></script>
 
-<script src="/js/ayer.js"></script>
+<script src="/dist/main.js"></script>
 
-
-
-<!-- Root element of PhotoSwipe. Must have class pswp. -->
+<!-- ImageViewer -->
+ <!-- Root element of PhotoSwipe. Must have class pswp. -->
 <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
     <!-- Background of PhotoSwipe. 
@@ -597,10 +606,9 @@
         })
     }
     viewer_init()
-</script>
-
-
-<script type="text/x-mathjax-config">
+</script> 
+<!-- MathJax -->
+ <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
       tex2jax: {
           inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
@@ -620,19 +628,94 @@
 <script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.6/unpacked/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <script>
   var ayerConfig = {
-    mathjax: true
+    mathjax: true,
+  };
+</script>
+
+<!-- Katex -->
+
+<!-- busuanzi  -->
+ 
+<script src="/js/busuanzi-2.3.pure.min.js"></script>
+ 
+<!-- ClickLove -->
+
+<!-- ClickBoom1 -->
+
+<!-- ClickBoom2 -->
+ 
+<script src="/js/clickBoom2.js"></script>
+ 
+<!-- CodeCopy -->
+ 
+<link rel="stylesheet" href="/css/clipboard.css">
+ <script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
+<script>
+  function wait(callback, seconds) {
+    var timelag = null;
+    timelag = window.setTimeout(callback, seconds);
+  }
+  !function (e, t, a) {
+    var initCopyCode = function(){
+      var copyHtml = '';
+      copyHtml += '<button class="btn-copy" data-clipboard-snippet="">';
+      copyHtml += '<i class="ri-file-copy-2-line"></i><span>COPY</span>';
+      copyHtml += '</button>';
+      $(".highlight .code pre").before(copyHtml);
+      $(".article pre code").before(copyHtml);
+      var clipboard = new ClipboardJS('.btn-copy', {
+        target: function(trigger) {
+          return trigger.nextElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        let $btn = $(e.trigger);
+        $btn.addClass('copied');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-checkbox-circle-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPIED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-checkbox-circle-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+      clipboard.on('error', function(e) {
+        e.clearSelection();
+        let $btn = $(e.trigger);
+        $btn.addClass('copy-failed');
+        let $icon = $($btn.find('i'));
+        $icon.removeClass('ri-file-copy-2-line');
+        $icon.addClass('ri-time-line');
+        let $span = $($btn.find('span'));
+        $span[0].innerText = 'COPY FAILED';
+        
+        wait(function () { // 等待两秒钟后恢复
+          $icon.removeClass('ri-time-line');
+          $icon.addClass('ri-file-copy-2-line');
+          $span[0].innerText = 'COPY';
+        }, 2000);
+      });
+    }
+    initCopyCode();
+  }(window, document);
+</script>
+ 
+<!-- CanvasBackground -->
+
+<script>
+  if (window.mermaid) {
+    mermaid.initialize({ theme: "forest" });
   }
 </script>
 
 
-
-<script src="/js/busuanzi-2.3.pure.min.js"></script>
-
-
-
-<script type="text/javascript" src="https://js.users.51.la/20544303.js"></script>
-
     
+    
+
   </div>
 </body>
 
