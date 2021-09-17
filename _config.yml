@@ -120,7 +120,7 @@ live2d:
   debug: false
   model:
     use: live2d-widget-model-wanko
-    scale: 0.5
+    scale: 1.0
     hHeadPos: 0.5
     vHeadPos: 0.5
   display:
@@ -131,7 +131,7 @@ live2d:
     hOffset: 20
     vOffset: 0
   mobile:
-    show: true
+    show: false
     scale: 0.5
   react:
     opacity: 0.8
