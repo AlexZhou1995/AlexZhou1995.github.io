@@ -117,7 +117,7 @@
 <p>文章指出当前的许多通过特征组合进行CTR预估的工作主要使用特征向量的内积或哈达玛积来计算交叉特征，这种方法忽略了特征本身的重要程度。提出通过使用Squeeze-Excitation network (SENET) 结构动态学习特征的重要性以及使用一个双线性函数(Bilinear function)来更好的建模交叉特征。</p>
 <a id="more"></a>
 <h2 id="方法">方法</h2>
-<p>本文的网络结构图如下： <img src="15941047971358.jpg" /></p>
+<p>本文的网络结构图如下： <img src="/2020/07/07/FiBiNet/15941047971358.jpg"></p>
 <p>可以看到有2处与普通的CTR模型不同：1.SENET Layer 2.Bilinear-Interaction Layer。我们着重看这两部分。假设ID特征有<span class="math inline">\(f\)</span>个，第<span class="math inline">\(i\)</span>个特征的embedding为<span class="math inline">\(e_i \in R^k\)</span>，<span class="math inline">\(k\)</span>为embed_size，下面先看一次前向的数据流： 1.<span class="math inline">\(E=[e_1,e_2,...,e_f]\)</span>，<span class="math inline">\(A\)</span>=SENET(<span class="math inline">\(E\)</span>)，A为每个ID特征的权重，<span class="math inline">\(A\in R^f\)</span> 2.用权重<span class="math inline">\(A\)</span>给<span class="math inline">\(E\)</span>的对应特征加权，得到了加权后的Embedding <span class="math inline">\(V=[v_1,...,v_f],v_i\in R^k\)</span> 3.<span class="math inline">\(p\)</span>=Bilinear-Interaction(<span class="math inline">\(E\)</span>)，<span class="math inline">\(p=[p_1,...,p_n]\)</span>，其中<span class="math inline">\(n=\frac{f(f-2)}{2}\)</span>，即交叉组合数。同理<span class="math inline">\(q\)</span>=Bilinear-Interaction(<span class="math inline">\(V\)</span>) 4.将<span class="math inline">\(p\)</span>和<span class="math inline">\(q\)</span>concat起来之后过DNN输出结果。</p>
 <h3 id="senet">SENET</h3>
 <h4 id="squeeze">1.Squeeze</h4>
