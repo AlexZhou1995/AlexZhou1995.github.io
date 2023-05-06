@@ -22,7 +22,7 @@ pip install -r requirements.txt
 
 使用transformer包即可下载huggingface的模型并使用，具体的code在官方的readme中。如果需要指定模型的版本，在可以在 `from_pretrained` 的调用中增加 `revision="v0.1.0"` 参数。
 
-![](20230506161935.jpg)
+![](./LLM-00-chatGLM的使用/20230506161935.jpg)
 
 此外还有api调用和gradio界面等等方式，这里不再赘述。总之，想要简单的用起来还是很容易的，readme写的很好。
 

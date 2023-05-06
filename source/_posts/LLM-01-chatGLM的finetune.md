@@ -18,7 +18,7 @@ tags:
 python环境按照chatGLM项目的需求进行配置即可。
 
 配置完成后，检查显卡是否可用
-![](Pasted image 20230506113847.png)
+![](./LLM-01-chatGLM的finetune/20230506113847.png)
 
 ## 02-模型准备
 
@@ -36,7 +36,7 @@ git clone https://github.com/THUDM/ChatGLM-6B.git
 
 通过运行cli_demo.py来测试是否一切OK，如果出现问题，建议逐一check下载文件的sha256是否跟hugging face上一致。
 
-![](Pasted image 20230506130900.png)
+![](./LLM-01-chatGLM的finetune/20230506130900.png)
 
 
 
@@ -54,7 +54,7 @@ ADGEN 数据集任务为根据输入（content）生成一段广告词（summary
 
 从 [Google Drive](https://drive.google.com/file/d/13_vf0xRTQsyneRKdD1bZIr93vBGOczrk/view?usp=sharing) 或者 [Tsinghua Cloud](https://cloud.tsinghua.edu.cn/f/b3f119a008264b1cabd1/?dl=1) 下载处理好的 ADGEN 数据集，将解压后的 `AdvertiseGen` 目录放到项目的目录下。
 
-![-c200](Pasted image 20230506115651.png)
+![](./LLM-01-chatGLM的finetune/20230506115651.png)
 
 ## 04-微调模型
 
@@ -70,17 +70,17 @@ bash train.sh
 ```
 
 `quantization_bit`可以对模型进行量化，适合显存较小的情况。默认配置（quantization_bit=4、per_device_train_batch_size=1、gradient_accumulation_steps=16）的情况下训练仅需6个G的显存，训练3000个step需要4个多小时。
-![](Pasted image 20230506132259.png)
+![](./LLM-01-chatGLM的finetune/20230506132259.png)
 
 
 如果不使用量化，其他参数不变的情况下，我这边实测需要13.5G的显存，但训练速度反而更快了。
-![](Pasted image 20230506133044.png)
+![](./LLM-01-chatGLM的finetune/20230506133044.png)
 
 
 
 上述的默认配置中，除了量化之外的两个参数，表示一次训练迭代会以 1 的批处理大小进行 16 次累加的前后向传播，等效为 16 的总批处理大小。若想在同等批处理大小下提升训练效率，可在二者乘积不变的情况下，加大per_device_train_batch_size的值，但会增加显存消耗。我这里按照实际情况调整了参数，目前已经可以在1.5小时内完成训练了。
 
-![-c500](Pasted image 20230506150312.png)
+![](./LLM-01-chatGLM的finetune/20230506150312.png)
 
 
 如果需要进行全参数的 Finetune，需要安装 [Deepspeed](https://github.com/microsoft/DeepSpeed)，然后运行以下指令：
@@ -138,10 +138,10 @@ model = model.eval()
 ```
 
 运行cli_demo.py后，就可以进行测试了。
-![](Pasted image 20230506151424.png)
+![](./LLM-01-chatGLM的finetune/20230506151424.png)
 
 对比fine-tune前的模型
-![](Pasted image 20230506151727.png)
+![](./LLM-01-chatGLM的finetune/20230506151727.png)
 
 可以看到在训练数据集上的回答效果显著提升
 
@@ -153,7 +153,7 @@ model = model.eval()
 官方对比了全量微调，ptuning微调和lora微调的效果。其中LoRA实现采用的是 [simple_thu_chatglm6b](https://github.com/yuanzhoulvpi2017/zero_nlp/tree/main/simple_thu_chatglm6b)
 
 结果如下图所示，在官方的测试中，p-tuning > Finetue > Lora
-![-c500](Pasted image 20230506134755.png)
+![](./LLM-01-chatGLM的finetune/20230506134755.png)
 
 ## 总结
 本文主要记录了一次对于fine-tune的尝试。下一步可能会去了解一下langchain的细节，做一些有意思的东西。
