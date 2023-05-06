@@ -84,7 +84,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">1.8k</span>
+            <span class="post-count">1.7k</span>
         </span>
     </span>
 
@@ -129,18 +129,14 @@
 <p>chatGLM官方的微调指引中，使用了<a href="https://github.com/THUDM/P-tuning-v2" target="_blank" rel="noopener">P-Tuning v2</a> 的微调技术。数据集使用的是 <a href="https://aclanthology.org/D19-1321.pdf" target="_blank" rel="noopener">ADGEN</a> (广告生成) 数据集。</p>
 <p>ADGEN 数据集任务为根据输入（content）生成一段广告词（summary）。 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"content"</span>: <span class="string">"类型#上衣*版型#宽松*版型#显瘦*图案#线条*衣样式#衬衫*衣袖型#泡泡袖*衣款式#抽绳"</span>,</span><br><span class="line">    <span class="attr">"summary"</span>: <span class="string">"这件衬衫的款式非常的宽松，利落的线条可以很好的隐藏身材上的小缺点，穿在身上有着很好的显瘦效果。领口装饰了一个可爱的抽绳，漂亮的绳结展现出了十足的个性，配合时尚的泡泡袖型，尽显女性甜美可爱的气息。"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>从 <a href="https://drive.google.com/file/d/13_vf0xRTQsyneRKdD1bZIr93vBGOczrk/view?usp=sharing" target="_blank" rel="noopener">Google Drive</a> 或者 <a href="https://cloud.tsinghua.edu.cn/f/b3f119a008264b1cabd1/?dl=1" target="_blank" rel="noopener">Tsinghua Cloud</a> 下载处理好的 ADGEN 数据集，将解压后的 <code>AdvertiseGen</code> 目录放到项目的目录下。</p>
-<figure>
-<img src="/2023/05/06/LLM-01-chatGLM%E7%9A%84finetune/20230506115651.png" alt="-c200"><figcaption aria-hidden="true">-c200</figcaption>
-</figure>
+<p><img src="/2023/05/06/LLM-01-chatGLM%E7%9A%84finetune/20230506115651.png"></p>
 <h2 id="微调模型">04-微调模型</h2>
 <p>还需要安装依赖 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install jieba datasets rouge_chinese</span><br></pre></td></tr></table></figure></p>
 <p>进入<code>ptuning</code>文件夹，修改<code>train.sh</code>中数据集的路径和本地模型的路径，如果按照上图的结构放置训练数据集和模型，则需在路径前加<code>../</code> 其他配置可按需修改。运行p-tuning执行下面命令 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash train.sh</span><br></pre></td></tr></table></figure></p>
 <p><code>quantization_bit</code>可以对模型进行量化，适合显存较小的情况。默认配置（quantization_bit=4、per_device_train_batch_size=1、gradient_accumulation_steps=16）的情况下训练仅需6个G的显存，训练3000个step需要4个多小时。 <img src="/2023/05/06/LLM-01-chatGLM%E7%9A%84finetune/20230506132259.png"></p>
 <p>如果不使用量化，其他参数不变的情况下，我这边实测需要13.5G的显存，但训练速度反而更快了。 <img src="/2023/05/06/LLM-01-chatGLM%E7%9A%84finetune/20230506133044.png"></p>
 <p>上述的默认配置中，除了量化之外的两个参数，表示一次训练迭代会以 1 的批处理大小进行 16 次累加的前后向传播，等效为 16 的总批处理大小。若想在同等批处理大小下提升训练效率，可在二者乘积不变的情况下，加大per_device_train_batch_size的值，但会增加显存消耗。我这里按照实际情况调整了参数，目前已经可以在1.5小时内完成训练了。</p>
-<figure>
-<img src="/2023/05/06/LLM-01-chatGLM%E7%9A%84finetune/20230506150312.png" alt="-c500"><figcaption aria-hidden="true">-c500</figcaption>
-</figure>
+<p><img src="/2023/05/06/LLM-01-chatGLM%E7%9A%84finetune/20230506150312.png"></p>
 <p>如果需要进行全参数的 Finetune，需要安装 <a href="https://github.com/microsoft/DeepSpeed" target="_blank" rel="noopener">Deepspeed</a>，然后运行以下指令： <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bash ds_train_finetune.sh</span><br></pre></td></tr></table></figure> 由于资源问题（穷），这部分就先跳过了。之后有机会在详细介绍。</p>
 <h3 id="使用自己的数据集微调">使用自己的数据集微调</h3>
 <p>修改 <code>train.sh</code> 和 <code>evaluate.sh</code> 中的 <code>train_file</code>、<code>validation_file</code>和<code>test_file</code>为你自己的 JSON 格式数据集路径，并将 <code>prompt_column</code> 和 <code>response_column</code> 改为 JSON 文件中输入文本和输出文本对应的 KEY。可能还需要增大 <code>max_source_length</code> 和 <code>max_target_length</code> 来匹配你自己的数据集中的最大输入输出长度。</p>
@@ -156,7 +152,7 @@
 <h2 id="评估模型">06-评估模型</h2>
 <p>评估模型是去评估微调模型的好坏，我们可以调用<code>evaluate.sh</code>来进行评估，其中部分路径也需要进行修改。评测指标为中文 Rouge score 和 BLEU-4，会将评估结果输出到文本文件中。</p>
 <p>官方对比了全量微调，ptuning微调和lora微调的效果。其中LoRA实现采用的是 <a href="https://github.com/yuanzhoulvpi2017/zero_nlp/tree/main/simple_thu_chatglm6b" target="_blank" rel="noopener">simple_thu_chatglm6b</a></p>
-<p>结果如下图所示，在官方的测试中，p-tuning &gt; Finetue &gt; Lora <img src="/2023/05/06/LLM-01-chatGLM%E7%9A%84finetune/20230506134755.png" alt="-c500"></p>
+<p>结果如下图所示，在官方的测试中，p-tuning &gt; Finetue &gt; Lora <img src="/2023/05/06/LLM-01-chatGLM%E7%9A%84finetune/20230506134755.png"></p>
 <h2 id="总结">总结</h2>
 <p>本文主要记录了一次对于fine-tune的尝试。下一步可能会去了解一下langchain的细节，做一些有意思的东西。</p>
  
